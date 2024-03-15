@@ -1,0 +1,134 @@
+Sub Stock_Data()
+
+
+
+For Each ws In Worksheets         ' Creating script that acts the same on every sheet
+
+Dim WorksheetName As String
+
+LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+WorksheetName = ws.Name
+
+MsgBox (WorksheetName)
+
+
+Next
+
+
+
+'Declaring variables
+
+Dim i As Integer
+Dim j As Integer
+Dim Price_Change As Double
+Dim Cell As Range
+
+
+
+For i = 2 To LastRow   ' Inserting values for variables for rows ( from 2nd row to last )
+For j = 2 To LastRow   ' Inserting values for varibale for columns ( from 2nd row to last)
+
+
+Cells(i, 9) = Cells(i, 1) ' Inserting to specific column "I1" the column Ticker
+Range("I1").Value = "Ticker" ' Creating the name for the column I1 - Ticker
+
+
+
+
+Price_Change = (Cells(i, 6) - Cells(j, 3))  ' Calculation of Yearly_Change
+Cells(i, 10) = Price_Change ' Adding the results into specific place 10 column = "J2"
+Range("J1").Value = "Yearly_Change" 'Creating the name for the column J1 - Yearly_Change
+
+
+
+ 
+Dim Percent_Change As Double
+
+Percent_Change = Price_Change / Cells(j, 3)  'Calculation of Percent_Change
+Cells(i, 11) = Percent_Change                'Inserting the results into specific column 11 = "K2"
+Range("K1").Value = "Percent_Change"         'Creating name for the column - Percent_Change
+
+
+
+
+
+Dim Total_Stock_Vol As Double                 ' Declaring variable
+
+Total_Stock_Vol = 0                           'Inserting a starting value into variable
+Total_Stock_Vol = Total_Stock_Vol + Cells(i, 7) 'Calculatin of Total stock volume
+Cells(i, 12) = Total_Stock_Vol               'Inserting the results into specific column 12 = "L2"
+Range("L1").Value = "Total_Stock_Volume"     'Creating name for the column - Total_Stock_Volume
+
+
+
+Next j
+Next i
+
+
+
+
+
+For Each Cell In Range("J2", "J7") 'In order to change the background color of the cell with negative numbers into red and positive into green
+                                    'Using the property "Interior".
+
+
+If Cell.Value < 0 Then
+Cell.Interior.Color = vbRed
+Else: Cell.Interior.Color = vbGreen
+End If
+
+Next
+ 
+ 
+ ' Declaring variables
+ 
+  
+ Dim Total_Sum As Long
+ Dim Total_Max As Long
+ Dim Total_Min As Long
+ Dim Ticker As String
+ Dim i_Ticker As Integer
+ 
+ 
+For i_Ticker = 2 To LastRow
+ Ticker = Cells(i_Ticker, 1)
+ 
+ Total_Max = WorksheetFunction.Max(Range("E2:E7"))   'Calculating the Greatest% increase volume
+ Range("P2").Value = Total_Max
+ Range("N2").Value = "Greatest%_Increase "
+ Cells(i_Ticker, 15) = Ticker
+ Range("O1").Value = "Ticker"
+ Range("P1").Value = "Value"
+ 
+ 
+Total_Min = WorksheetFunction.Min(Range("E2:E7"))    'Calculating the Greatest% decrease volume
+Range("P3").Value = Total_Min
+Range("N3").Value = "Greatest%_Decrease "
+ 
+ 
+ 
+ 
+ 
+ Total = WorksheetFunction.Sum(Range("E2:E7"))        'Calculating the Greatest total volume
+ Cells(i, 16) = Cells(i, 1)
+ Range("P4").Value = Total
+ Range("N4").Value = "Greatest_Total_Volume"
+ 
+ 
+ Next
+ 
+ ' Changing format to percentage
+ 
+ Dim i_percent As Integer                   'Declaring variables
+ 
+ For i_percent = 2 To LastRow
+ 
+ 
+ Range("K" & i_percent).NumberFormat = "0.00%"
+ 
+ Next i_percent
+ 
+ 
+  
+  
+End Sub
